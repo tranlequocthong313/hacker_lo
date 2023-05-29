@@ -13,4 +13,5 @@ class USB_Detector {
 		USB_Detector();
 		std::pair<int, udev_device*> detect();
 		void teardown();
+		int getModelID();
 };

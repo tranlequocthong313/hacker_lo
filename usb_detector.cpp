@@ -71,20 +71,9 @@ std::pair<int, udev_device*>USB_Detector::detect() {
 	return ans;
 }
 
-int main() {
-	std::cout<<"STARTED"<<std::endl;
-	USB_Detector usb_detector;
-	while(true) {
-		auto signal=usb_detector.detect();
-		if(signal.first==1) {
-			std::cout<<"--USB device connected--"<<std::endl;
-			usb_detector.printDeviceInfo();
-		} else if(signal.first==0) {
-			std::cout<<"--USB device disconnected--"<<std::endl;
-		}
-		udev_device_unref(signal.second);
-	}
-	usb_detector.teardown();
-	return 0;
+int USB_Detector::getModelID() {
+	if(!dev) return -1;
+	const char* modelID=udev_device_get_property_value(dev, "ID_MODEL_ID");
+	return std::stoi(modelID);
 }
 

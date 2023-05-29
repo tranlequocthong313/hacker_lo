@@ -1,0 +1,11 @@
+[Unit]
+Description=Hacker Service
+After=network.target
+
+[Service]
+ExecStart=/mnt/nvme0n1p5/Workspace/du_an_hacker_lo/hacker
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
