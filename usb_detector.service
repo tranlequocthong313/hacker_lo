@@ -1,0 +1,11 @@
+[Unit]
+Description=USB Monitor Service
+After=network.target
+
+[Service]
+ExecStart=/mnt/nvme0n1p5/Workspace/du_an_hacker_lo/usb_detector
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
