@@ -11,6 +11,8 @@ class EncDec {
 		pair<bool, vector<char>> read(string fname);
 		int getFileSize();
 	public:
-		bool encode(string fname, int key);
-		bool decode(string fname, int key);
+		bool encode(string path, int key);
+		bool decode(string path, int key);
+		void encode(vector<string>& paths, int key);
+		void decode(vector<string>& paths, int key);
 };

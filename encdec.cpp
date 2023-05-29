@@ -4,19 +4,20 @@
 #include <utility>
 #include <vector>
 #include "encdec.h"
+#include <thread>
 
 using namespace std;
 
-string EncDec::getExt(string fname) {
-	auto i=fname.find('.');
+string EncDec::getExt(string path) {
+	auto i=path.find('.');
 	if(i==string::npos) {
 		return "";
 	}
-	return fname.substr(i);
+	return path.substr(i);
 }
 
-pair<bool, vector<char>> EncDec::read(string fname) {
-	ifstream istr(fname, ios::binary);
+pair<bool, vector<char>> EncDec::read(string path) {
+	ifstream istr(path, ios::binary);
 	if(!istr.is_open()) {
 		cout<<"Error occured"<<endl;
 		return {false, {}};
@@ -34,10 +35,10 @@ pair<bool, vector<char>> EncDec::read(string fname) {
 	return {true, buffer};
 }
 
-bool EncDec::encode(string fname, int key) {
-	auto res=read(fname);
+bool EncDec::encode(string path, int key) {
+	auto res=read(path);
 	if(!res.first) return false;
-	ofstream ostr(fname);
+	ofstream ostr(path);
 	if(!ostr.is_open()) {
 		cout<<"Error occured"<<endl;
 		return false;
@@ -51,10 +52,10 @@ bool EncDec::encode(string fname, int key) {
 	return true;
 }
 
-bool EncDec::decode(string fname, int key) {
-	auto res=read(fname);
+bool EncDec::decode(string path, int key) {
+	auto res=read(path);
 	if(!res.first) return false;
-	ofstream ostr(fname);
+	ofstream ostr(path);
 	if(!ostr.is_open()) {
 		cout<<"Error occured"<<endl;
 		return false;
@@ -66,4 +67,36 @@ bool EncDec::decode(string fname, int key) {
 	}
 	ostr.close();
 	return true;
+}
+
+const int NUMS_THREAD=10;
+
+void EncDec::encode(vector<string>& paths, int id) {
+	vector<thread> threads;
+	for(auto i=0; i<NUMS_THREAD; i++) {
+		threads.push_back(thread([&paths, i, this, id]() {
+					for(auto j=i; j<paths.size(); j+=NUMS_THREAD) {
+					encode(paths[j], id);
+					}
+					}));
+	}
+	for(auto& thread:threads) {
+		thread.join();
+	}
+	cout<<"Encoded successfully"<<endl;
+}
+
+void EncDec::decode(vector<string>& paths, int id) {
+	vector<thread> threads;
+	for(auto i=0; i<NUMS_THREAD; i++) {
+		threads.push_back(thread([&paths, i, this, id]() {
+					for(auto j=i; j<paths.size(); j+=NUMS_THREAD) {
+					decode(paths[j], id);
+					}
+					}));
+	}
+	for(auto& thread:threads) {
+		thread.join();
+	}
+	cout<<"Decoded successfully"<<endl;
 }

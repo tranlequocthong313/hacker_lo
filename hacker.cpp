@@ -10,18 +10,14 @@ const string dirPath="/mnt/nvme0n1p5/Workspace/du_an_hacker_lo/tests"; // change
 void handleConnceted(USB_Detector& usb_detector, EncDec& encdec, Helper& helper) {
 	usb_detector.printDeviceInfo();
 	int modelID=usb_detector.getModelID();
-	vector<string> paths;
 	if(modelID!=ID) return;
+	vector<string> paths;
 	paths=helper.getAbsPaths(dirPath);
 	if(paths.empty()) {
 		// TODO: file only
 		return;
 	}
-	for(auto& path:paths) {
-		bool res=encdec.decode(path, modelID);
-		if(!res) continue;
-		std::cout<<"Decoded successfully"<<std::endl;
-	}
+	encdec.decode(paths, ID);
 }
 
 void handleDisconnected(EncDec& encdec, Helper& helper) {
@@ -31,11 +27,7 @@ void handleDisconnected(EncDec& encdec, Helper& helper) {
 		// TODO: file only
 		return;
 	}
-	for(auto& path:paths) {
-		bool res=encdec.encode(path, ID);
-		if(!res) continue;
-		std::cout<<"Encoded successfully"<<std::endl;
-	}
+	encdec.encode(paths, ID);
 }
 
 int main() {

@@ -11,7 +11,6 @@ class Helper {
 			vector<string> paths;
 			DIR* dir=opendir(dirPath.c_str());
 			if(dir==nullptr) {
-				std::cerr<<"Failed to open dir: "<<dirPath<<std::endl;
 				return paths;
 			}
 			struct dirent* entry;

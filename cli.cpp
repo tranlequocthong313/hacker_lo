@@ -7,9 +7,9 @@
 using namespace std;
 
 const int ID=301; // change this to your device's model id
-void getFileName(string& fname) {
-	cout<<"File's name: ";
-	cin>>fname;
+void getPathInput(string& pathName) {
+	cout<<"Path: ";
+	cin>>pathName;
 }
 int main() {
 	int choice;
@@ -17,7 +17,7 @@ int main() {
 	vector<string> paths;
 	Helper helper;
 	while(true) {
-		string fname;
+		string pathName;
 		cout<<"--Menu--"<<endl;
 		cout<<"1. Encode"<<endl;
 		cout<<"2. Decode"<<endl;
@@ -26,34 +26,24 @@ int main() {
 		cin>>choice;
 		switch (choice) {
 			case 1: {
-						getFileName(fname);
-						paths=helper.getAbsPaths(fname);
+						getPathInput(pathName);
+						paths=helper.getAbsPaths(pathName);
 						if(paths.empty()) {
-							if(encdec.encode(fname, ID)) {
-								cout<<"Encoded success!"<<endl;
-							}
+							if(!encdec.encode(pathName, ID)) break;
+							cout<<"Encoded success!"<<endl;
 						} else {
-							for(auto& path:paths) {
-								if(encdec.encode(path, ID)) {
-									cout<<"Encoded success!"<<endl;
-								}
-							}
+							encdec.encode(paths, ID);
 						}
 						break;
 					}
 			case 2: {
-						getFileName(fname);
-						paths=helper.getAbsPaths(fname);
+						getPathInput(pathName);
+						paths=helper.getAbsPaths(pathName);
 						if(paths.empty()) {
-							if(encdec.decode(fname, ID)) {
-								cout<<"Decoded success!"<<endl;
-							}
+							if(encdec.decode(pathName, ID)) break;
+							cout<<"Decoded success!"<<endl;
 						} else {
-							for(auto& path:paths) {
-								if(encdec.decode(path, ID)) {
-									cout<<"Decoded success!"<<endl;
-								}
-							}
+							encdec.decode(paths, ID);
 						}
 						break;
 					}

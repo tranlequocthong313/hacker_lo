@@ -1,1 +1,9 @@
-P–›™¢‘’Mi–œ ¡Ÿ’šk77¢ –›”M›š’ ’M ¡‘h77–›¡Mš–›UVM¨76œ¢¡iiOu’™™œM¤œŸ™‘NOii’›‘™h76Ÿ’¡¢Ÿ›M]h7ª7
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "Hello World!" << endl;
+    return 0;
+}
